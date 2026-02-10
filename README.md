@@ -51,6 +51,7 @@
 ```bash
 git clone https://github.com/JamesYang76/LossZero.git
 cd LossZero
+pip install -r requirements.txt
 ```
 
 ## 📁 Project Structure

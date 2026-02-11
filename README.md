@@ -54,6 +54,29 @@ cd LossZero
 pip install -r requirements.txt
 ```
 
+## ⚙️ Configuration
+
+프로젝트의 주요 경로 및 하이퍼파라미터 설정은 다음과 같습니다. 환경(Colab vs Local)에 따라 각 DIR path를 올바르게 설정하기 바랍니다.
+
+### Directory Paths
+- **DATA_DIR**:
+  - `Local`: `~/Projects/LossZero/data/Motorcycle Night Ride Dataset`
+  - `Colab`: `/content/drive/MyDrive/motor_model`
+- **JSON_PATH**: `DATA_DIR/COCO_motorcycle (pixel).json`
+- **IMG_DIR**: `DATA_DIR/images`
+
+### CFG (Hyperparameters)
+| Parameter | Value | Description |
+| :--- | :--- | :--- |
+| `model_name` | `nvidia/segformer-b2-finetuned-...` | SegFormer-B2 (Cityscapes Pretrained) |
+| `img_size` | `(384, 384)` | 모델 입력 이미지 해상도 |
+| `batch_size` | `8` | 학술용 배치 크기 (메모리에 따라 조절) |
+| `lr` | `1e-4` | Learning Rate (AdamW) |
+| `epochs` | `20` | 총 학습 횟수 |
+| `num_worker` | `0` (Local) / `Max` (Colab) | 멀티프로세싱 설정 |
+
+---
+
 ## 📁 Project Structure
 
 ```text

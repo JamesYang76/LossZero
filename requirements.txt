@@ -3,9 +3,11 @@ segmentation-models-pytorch
 albumentations
 opencv-python
 wandb
-torch
-torchvision
+torch==2.6.0
+torchvision==0.21.0
 matplotlib
 numpy
 pandas
 scikit-learn
+transformers
+ipywidgets

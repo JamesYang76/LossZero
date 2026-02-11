@@ -1,0 +1,9 @@
+# Jupyter notebooks
+*.ipynb text eol=crlf
+*.py text eol=lf
+*.md text eol=lf
+
+# 바이너리 파일 (변환 안 함)
+*.pth binary
+*.onnx binary
+*.png binary

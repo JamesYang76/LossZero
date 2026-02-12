@@ -12,3 +12,4 @@ scikit-learn
 transformers
 ipywidgets
 grad-cam
+thop

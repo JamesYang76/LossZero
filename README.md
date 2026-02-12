@@ -23,8 +23,9 @@
 ## 🛠️ Methodology & Tech Stack
 
 ### Architecture
-- **Model**:  Segmentation Models (SAM, DeepLabV3+, U-Net++, or SegFormer 등 검토 중)
-- **Framework**: PyTorch
+- **Model**: **SegFormer-B2** (Transformer-based Encoder-Decoder)
+- **Backbone**: MiT-B2 (Mix Transformer)
+- **Framework**: PyTorch / Hugging Face Transformers
 
 ### Performance Metrics (Safety-First)
 도로 주행의 특수성을 고려하여 다음과 같은 지표를 상세히 모니터링합니다:
@@ -76,9 +77,26 @@ pip install -r requirements.txt
 | `epochs` | `20` | 총 학습 횟수 |
 
 ### Advanced Training Strategies
-- **Copy-Paste Augmentation**: 소수 클래스(차선)의 학습 효율을 높이기 위해 합성 기법 적용.
-- **Weighted Loss**: 클래스 불균형 해소를 위해 `Lane Mark(12.0)`, `Moveable(6.0)` 등에 높은 가중치 부여.
-- **Mixed Precision (FP16)**: 학습 속도 향상 및 메모리 절약을 위한 자동 혼합 정밀도 사용.
+- **Global Resize Strategy**: 원본(1080p)의 구도를 유지하면서 `A.Resize`를 적용하여 모델이 도로의 전체적인 레이아웃(지평선, 내 오토바이 위치 등)을 안정적으로 파악.
+- **100% Lane-Mark Copy-Paste**: 데이터셋에서 1.4%에 불과한 'Lane Mark' 클래스의 학습을 극대화하기 위해 모든 훈련 데이터에 100% 확률로 차선 객체를 합성.
+- **Weighted CrossEntropy**: 클래스 불균형 해소를 위해 `Lane Mark(12.0)`, `Moveable(6.0)` 등에 높은 가중치 부여.
+- **Safety-Critical Evaluation**: 
+  - **Boundary IoU (mBoU)**: 객체의 경계선 정밀도를 측정하여 차선 이탈 방지 등 세밀한 제어 가능성 검토.
+  - **Safety Risk Analysis**: '비주행 구역(Undrivable)'을 '도로(Road)'로 오분류하는 치명적 오류를 집중 관리.
+
+## 📈 Training Results (Final)
+
+20 에폭 학습 결과, 야간 환경의 악조건 속에서도 매우 우수한 성능을 확보하였습니다.
+
+| Metric | Value | Comparison (vs Epoch 1) |
+| :--- | :--- | :--- |
+| **mIoU** | **0.7360** | ⬆️ +400% 개선 |
+| **mBoU** | **0.1557** | ⬆️ 경계 세밀도 대폭 향상 |
+| **Lane Mark IoU** | **0.25+** | ⬆️ Copy-Paste 전략의 성공 |
+| **Undrivable IoU** | **0.90+** | ⬆️ 안전 구역 판단 안정화 |
+
+### Visualization (Grad-CAM)
+Grad-CAM 분석 결과, 모델이 밤거리의 어두운 환경에서도 **'차선(Lane Mark)'**과 **'이동 객체(Moveable)'**의 특징적인 엣지 부분을 정확하게 주시하며 의사결정을 내리고 있음을 확인했습니다.
 
 ---
 

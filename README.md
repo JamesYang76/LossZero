@@ -56,7 +56,7 @@ pip install -r requirements.txt
 
 ## ⚙️ Configuration
 
-프로젝트의 주요 경로 및 하이퍼파라미터 설정은 다음과 같습니다. 환경(Colab vs Local)에 따라 각 DIR path를 올바르게 설정하기 바랍니다.
+프로젝트의 주요 경로 및 하이퍼파라미터 설정은 다음과 같습니다.
 
 ### Directory Paths
 - **DATA_DIR**:
@@ -64,16 +64,21 @@ pip install -r requirements.txt
   - `Colab`: `/content/drive/MyDrive/motor_model`
 - **JSON_PATH**: `DATA_DIR/COCO_motorcycle (pixel).json`
 - **IMG_DIR**: `DATA_DIR/images`
+- **CHECKPOINT_DIR**: `./checkpoints` (학습된 모델 저장 경로)
 
 ### CFG (Hyperparameters)
 | Parameter | Value | Description |
 | :--- | :--- | :--- |
-| `model_name` | `nvidia/segformer-b2-finetuned-...` | SegFormer-B2 (Cityscapes Pretrained) |
-| `img_size` | `(384, 384)` | 모델 입력 이미지 해상도 |
-| `batch_size` | `8` | 학술용 배치 크기 (메모리에 따라 조절) |
-| `lr` | `1e-4` | Learning Rate (AdamW) |
+| `model_name` | `nvidia/segformer-b2-...` | SegFormer-B2 (Cityscapes Pretrained) |
+| `img_size` | `(480, 480)` | 성능과 속도의 균형을 맞춘 해상도 |
+| `batch_size` | `4` | 고해상도 학습을 위한 배치 사이즈 조절 |
+| `lr` | `1e-4` | Learning Rate (AdamW Optimizer) |
 | `epochs` | `20` | 총 학습 횟수 |
-| `num_worker` | `0` (Local) / `Max` (Colab) | 멀티프로세싱 설정 |
+
+### Advanced Training Strategies
+- **Copy-Paste Augmentation**: 소수 클래스(차선, 이동 물체)의 학습 효율을 높이기 위해 무작위 합성 기법 적용.
+- **Weighted Loss**: 클래스 불균형 해소를 위해 `Lane Mark(12.0)`, `Moveable(6.0)` 등에 높은 가중치 부여.
+- **Mixed Precision (FP16)**: 학습 속도 향상 및 메모리 절약을 위한 자동 혼합 정밀도 사용.
 
 ---
 
@@ -81,14 +86,19 @@ pip install -r requirements.txt
 
 ```text
 LossZero/
-├── data/                                   # Symbolic link or renamed data directory
-│   └── Motorcycle Night Ride Dataset/      # Raw Dataset (from Kaggle)
-│       ├── COCO_motorcycle (pixel).json    # Annotation file
-│       └── images/                         # Source images and mask files
-├── motorcycle.ipynb                        # Main development notebook
+├── data/                                   # 데이터셋 디렉토리
+│   └── Motorcycle Night Ride Dataset/
+│       ├── COCO_motorcycle (pixel).json    # 어노테이션 파일
+│       └── images/                         # 원본 이미지 및 마스크
+├── checkpoints/                            # 학습된 모델 저장소
+│   ├── segformer_best_miou.pth             # 최고 mIoU 달성 모델
+│   ├── segformer_best_mbou.pth             # 최고 mBoU (경계선 정밀도) 달성 모델
+│   └── segformer_last.pth                  # 최종 에폭 학습 모델
+├── motorcycle.ipynb                        # 메인 개발 및 학습 노트북
 ├── .gitignore
 └── README.md
 ```
 
 ---
 *Safe Riding through AI Precision — LossZero.*
+

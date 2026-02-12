@@ -70,13 +70,13 @@ pip install -r requirements.txt
 | Parameter | Value | Description |
 | :--- | :--- | :--- |
 | `model_name` | `nvidia/segformer-b2-...` | SegFormer-B2 (Cityscapes Pretrained) |
-| `img_size` | `(480, 480)` | 성능과 속도의 균형을 맞춘 해상도 |
-| `batch_size` | `4` | 고해상도 학습을 위한 배치 사이즈 조절 |
+| `img_size` | `(384, 672)` | 성능과 속도의 균형을 맞춘 해상도 |
+| `batch_size` | `8` | 고해상도 학습을 위한 배치 사이즈 조절 |
 | `lr` | `1e-4` | Learning Rate (AdamW Optimizer) |
 | `epochs` | `20` | 총 학습 횟수 |
 
 ### Advanced Training Strategies
-- **Copy-Paste Augmentation**: 소수 클래스(차선, 이동 물체)의 학습 효율을 높이기 위해 무작위 합성 기법 적용.
+- **Copy-Paste Augmentation**: 소수 클래스(차선)의 학습 효율을 높이기 위해 합성 기법 적용.
 - **Weighted Loss**: 클래스 불균형 해소를 위해 `Lane Mark(12.0)`, `Moveable(6.0)` 등에 높은 가중치 부여.
 - **Mixed Precision (FP16)**: 학습 속도 향상 및 메모리 절약을 위한 자동 혼합 정밀도 사용.
 

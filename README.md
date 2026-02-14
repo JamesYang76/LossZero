@@ -95,7 +95,22 @@ pip install -r requirements.txt
 | **Lane Mark IoU** | **0.25+** | ⬆️ Copy-Paste 전략의 성공 |
 | **Undrivable IoU** | **0.90+** | ⬆️ 안전 구역 판단 안정화 |
 
+### Advanced Inference Visualization (HUD Style)
+
+![Lane Inference HUD](lane_inference_hud.png)
+
+The final model's inference performance is visualized using a high-tech HUD-style display, focusing on safety-critical elements:
+
+- **Panel 1: Lane Highlight (RED)**: Model predictions for 'Lane Mark' are highlighted in vivid crimson with edge enhancement. This simulates a real-time autonomous driving support system, making the detected lane boundaries significantly more visible in pitch-black conditions.
+- **Panel 2: Overlap Analysis (GT vs Pred)**: A comparison between Ground Truth and Model Prediction.
+    - **Yellow (Overlap)**: High-accuracy detection area.
+    - **Green (GT)**: Missed areas (False Negatives).
+    - **Red (Pred)**: Incorrect detection (False Positives).
+
 ### Visualization (Grad-CAM)
+
+![Grad-CAM Visualization](gram_cam.png)
+
 Grad-CAM 분석 결과, 모델이 밤거리의 어두운 환경에서도 **'차선(Lane Mark)'**과 **'이동 객체(Moveable)'**의 특징적인 엣지 부분을 정확하게 주시하며 의사결정을 내리고 있음을 확인했습니다.
 
 ---
